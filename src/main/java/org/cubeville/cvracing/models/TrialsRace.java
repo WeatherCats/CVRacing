@@ -111,14 +111,20 @@ public class TrialsRace extends Race {
             "type", this.getTrack().getType().name().toLowerCase(),
             "gamemode", "trials"
         ));
-        this.endPlayerRace(p);
+        this.endPlayerRace(p, true);
     }
 
-    protected void endPlayerRace(Player p) {
+    protected void endPlayerRace(Player p, boolean finished) {
         RaceManager.removeRace(p);
         p.getActivePotionEffects().forEach(potionEffect -> p.removePotionEffect(potionEffect.getType()));
         hasStarted = false;
-        this.removePlayerFromRaceAndSendToLoc(p, track.getExit());
+        Location loc = track.getExit();
+        if (finished) {
+            if (track.getFinishExit() != null) {
+                loc = track.getFinishExit();
+            }
+        }
+        this.removePlayerFromRaceAndSendToLoc(p, loc);
         RaceManager.finishRace(track);
     }
 }

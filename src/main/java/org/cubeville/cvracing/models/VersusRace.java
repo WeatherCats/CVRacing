@@ -219,7 +219,7 @@ public class VersusRace extends Race {
             "type", this.getTrack().getType().name().toLowerCase(),
             "gamemode", "versus"
         ));
-        this.endPlayerRace(player);
+        this.endPlayerRace(player, true);
     }
 
     @Override
@@ -289,7 +289,7 @@ public class VersusRace extends Race {
     }
 
     @Override
-    protected void endPlayerRace(Player player) {
+    protected void endPlayerRace(Player player, boolean finished) {
         player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
         removePlayer(player);
         this.removePlayerFromRaceAndSendToLoc(player, endLocation());

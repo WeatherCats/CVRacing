@@ -35,10 +35,16 @@ public class ConfigImportManager {
 			if (spawn != null) { track.setTrialsSpawn( parseTeleportLocation(spawn) ); }
 			String exit = trackConfig.getString("exit");
 			if (exit != null) { track.setExit( parseTeleportLocation(exit) ); }
+			String finishExit = trackConfig.getString("finishexit");
+			if (finishExit != null) { track.setFinishExit( parseTeleportLocation(finishExit) ); }
 			String spectate = trackConfig.getString("spectate");
 			if (spectate != null) { track.setSpectate( parseTeleportLocation(spectate) ); }
 			boolean canResetToCp = trackConfig.getBoolean("tptocp");
 			track.setIncludeReset(canResetToCp);
+			boolean isSurvivalMode = trackConfig.getBoolean("survival");
+			track.setSurvival(isSurvivalMode);
+			boolean isGroundFails = trackConfig.getBoolean("groundfails");
+			track.setGroundFails(isGroundFails);
 			String type = trackConfig.getString("type");
 			if (type != null) {
 				try { TrackType tt = TrackType.valueOf(type.toUpperCase()); track.setType(tt); }

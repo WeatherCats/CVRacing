@@ -2,6 +2,7 @@ package org.cubeville.cvracing;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -39,7 +40,9 @@ public class RaceManager {
 		race.addPlayer(p);
 		t.setVersusRace(race);
 		addRace(p, race);
-		p.getInventory().setItem(8, RaceUtilities.getLeaveQueueItem());
+		if (!t.isSurvival()) {
+			p.getInventory().setItem(8, RaceUtilities.getLeaveQueueItem());
+		}
 		t.setStatus(TrackStatus.IN_LOBBY);
 		t.getSigns().forEach(RaceSign::displayQueue);
 	}
@@ -68,9 +71,11 @@ public class RaceManager {
 		RacePlayerState rps = new RacePlayerState(race, player.getInventory().getContents());
 		races.put(player, rps);
 		// preserve armor the player is wearing
-		ItemStack[] armor = player.getInventory().getArmorContents().clone();
-		player.getInventory().clear();
-		player.getInventory().setArmorContents(armor);
+		if (!race.getTrack().isSurvival()) {
+			ItemStack[] armor = player.getInventory().getArmorContents().clone();
+			player.getInventory().clear();
+			player.getInventory().setArmorContents(armor);
+		}
 	}
 
 	public static void removePlayerFromHostedLobby(Track t, Player p) {
@@ -106,7 +111,9 @@ public class RaceManager {
 		}
 		vr.addPlayer(p);
 		addRace(p, vr);
-		p.getInventory().setItem(8, RaceUtilities.getLeaveQueueItem());
+		if (!t.isSurvival()) {
+			p.getInventory().setItem(8, RaceUtilities.getLeaveQueueItem());
+		}
 		t.getSigns().forEach(RaceSign::displayQueue);
 	}
 
@@ -152,7 +159,10 @@ public class RaceManager {
 
 	public static void removeRace(Player p) {
 		if (races.get(p) == null) { return; }
-		p.getInventory().setContents(races.get(p).inventory);
+		if (!races.get(p).race.getTrack().isSurvival()) {
+			p.setItemOnCursor(new ItemStack(Material.AIR));
+			p.getInventory().setContents(races.get(p).inventory);
+		}
 		races.remove(p);
 	}
 

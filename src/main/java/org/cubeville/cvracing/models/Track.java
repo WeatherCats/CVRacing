@@ -21,6 +21,7 @@ public class Track implements Listener {
 	private Location trialsSpawn;
 	private List<Location> versusSpawns = new ArrayList<>();
 	private Location exit;
+	private Location finishExit;
 	private Location spectate;
 	private List<RaceSign> signs = new ArrayList<>();
 	private List<Checkpoint> checkpoints = new ArrayList<>();
@@ -28,6 +29,8 @@ public class Track implements Listener {
 	private Queue<Player> queue = new LinkedList<>();
 	private boolean includeReset = false;
 	private boolean isClosed = false;
+	private boolean isSurvival = false;
+	private boolean groundFails = false;
 
 	public Track(String name) {
 		this.name = name;
@@ -40,6 +43,14 @@ public class Track implements Listener {
 
 	public void setExit(Location exit) {
 		this.exit = exit;
+	}
+	
+	public Location getFinishExit() {
+		return this.finishExit;
+	}
+	
+	public void setFinishExit(Location finishExit) {
+		this.finishExit = finishExit;
 	}
 
 	public Location getTrialsSpawn() {
@@ -232,6 +243,22 @@ public class Track implements Listener {
 
 	public void setIncludeReset(boolean includeReset) {
 		this.includeReset = includeReset;
+	}
+	
+	public boolean isSurvival() {
+		return isSurvival;
+	}
+	
+	public void setSurvival(boolean isSurvival) {
+		this.isSurvival = isSurvival;
+	}
+	
+	public boolean isGroundFails() {
+		return groundFails;
+	}
+	
+	public void setGroundFails(boolean groundFails) {
+		this.groundFails = groundFails;
 	}
 
 	public boolean isClosed() {

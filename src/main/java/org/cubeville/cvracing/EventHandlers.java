@@ -152,15 +152,21 @@ public class EventHandlers implements Listener {
 				Race r = RaceManager.getRace(p);
 				if (r != null) {
 					RaceManager.cancelRace(p, "You died during the race.");
-					e.setCancelled(true);
+					if (!r.getTrack().isSurvival()) {
+						e.setCancelled(true);
+					}
 					if (p.getVehicle() != null) {
 						p.getVehicle().remove();
 					}
-					p.setInvulnerable(true);
+					if (!r.getTrack().isSurvival()) {
+						p.setInvulnerable(true);
+					}
 					countdownFreeze = Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
 						() -> p.setInvulnerable(false), 10L);
-					p.teleport(r.getTrack().getExit());
-					p.setHealth(20.0);
+					if (!r.getTrack().isSurvival()) {
+						p.teleport(r.getTrack().getExit());
+						p.setHealth(20.0);
+					}
 				}
 			}
 		}

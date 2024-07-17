@@ -32,9 +32,11 @@ public abstract class Race {
 			location.getChunk().load();
 		}
 		// preserve armor the player is wearing
-		ItemStack[] armor = player.getInventory().getArmorContents().clone();
-		player.getInventory().clear();
-		player.getInventory().setArmorContents(armor);
+		if (!track.isSurvival()) {
+			ItemStack[] armor = player.getInventory().getArmorContents().clone();
+			player.getInventory().clear();
+			player.getInventory().setArmorContents(armor);
+		}
 		Location tpLoc = location.clone().add(0, 1, 0);
 		player.teleport(tpLoc);
 		Vehicle v = null;
@@ -50,40 +52,50 @@ public abstract class Race {
 				stickMeta.setDisplayName("§6§lSpeedy Carrot Stick");
 				stickMeta.addEnchant(Enchantment.DURABILITY, 10, true);
 				carrotOnStick.setItemMeta(stickMeta);
-				player.getInventory().setItem(0, carrotOnStick);
+				if (!track.isSurvival()) {
+					player.getInventory().setItem(0, carrotOnStick);
+				}
 				v = p;
 				break;
 			case HORSE:
 				v = CustomizationManager.spawnHorse(player, location);
 				break;
 			case ELYTRA:
-				player.getInventory().setChestplate(new ItemStack(Material.ELYTRA, 1));
-				player.getInventory().setItem(0, new ItemStack(Material.FIREWORK_ROCKET, 1));
+				if (!track.isSurvival()) {
+					player.getInventory().setChestplate(new ItemStack(Material.ELYTRA, 1));
+					player.getInventory().setItem(0, new ItemStack(Material.FIREWORK_ROCKET, 1));
+				}
 				break;
 			case PARKOUR:
 				break;
 			case TRIDENT:
-				ItemStack trident = new ItemStack(Material.TRIDENT, 1);
-				ItemMeta tridentMeta = trident.getItemMeta();
-				tridentMeta.addEnchant(Enchantment.RIPTIDE, 3, false);
-				tridentMeta.addEnchant(Enchantment.DURABILITY, 10, true);
-				tridentMeta.setDisplayName("§b§lSpeed Trident");
-				trident.setItemMeta(tridentMeta);
-				player.getInventory().setItem(0, trident);
+				if (!track.isSurvival()) {
+					ItemStack trident = new ItemStack(Material.TRIDENT, 1);
+					ItemMeta tridentMeta = trident.getItemMeta();
+					tridentMeta.addEnchant(Enchantment.RIPTIDE, 3, false);
+					tridentMeta.addEnchant(Enchantment.DURABILITY, 10, true);
+					tridentMeta.setDisplayName("§b§lSpeed Trident");
+					trident.setItemMeta(tridentMeta);
+					player.getInventory().setItem(0, trident);
+				}
 				break;
 			case STRIDER:
 				Strider s = (Strider) player.getWorld().spawnEntity(location, EntityType.STRIDER);
 				s.setSaddle(true);
-				ItemStack fungusOnStick = new ItemStack(Material.WARPED_FUNGUS_ON_A_STICK, 1);
-				ItemMeta fungusMeta = fungusOnStick.getItemMeta();
-				fungusMeta.setDisplayName("§b§lSpeedy Fungus Stick");
-				fungusMeta.addEnchant(Enchantment.DURABILITY, 10, true);
-				fungusOnStick.setItemMeta(fungusMeta);
-				player.getInventory().setItem(0, fungusOnStick);
+				if (!track.isSurvival()) {
+					ItemStack fungusOnStick = new ItemStack(Material.WARPED_FUNGUS_ON_A_STICK, 1);
+					ItemMeta fungusMeta = fungusOnStick.getItemMeta();
+					fungusMeta.setDisplayName("§b§lSpeedy Fungus Stick");
+					fungusMeta.addEnchant(Enchantment.DURABILITY, 10, true);
+					fungusOnStick.setItemMeta(fungusMeta);
+					player.getInventory().setItem(0, fungusOnStick);
+				}
 				v = s;
 				break;
 		}
-		player.getInventory().setItem(8, RaceUtilities.getLeaveItem());
+		if (!track.isSurvival()) {
+			player.getInventory().setItem(8, RaceUtilities.getLeaveItem());
+		}
 
 		ArmorStand as = (ArmorStand) Objects.requireNonNull(location.getWorld()).spawnEntity(location, EntityType.ARMOR_STAND);
 		as.setVisible(false);
@@ -140,7 +152,7 @@ public abstract class Race {
 		}
 
 		p.playSound(p.getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 2F, 1F);
-		if (track.getType() == TrackType.ELYTRA) {
+		if (track.getType() == TrackType.ELYTRA && !track.isSurvival() && !p.getItemOnCursor().getType().equals(Material.FIREWORK_ROCKET)) {
 			p.getInventory().setItem(0, new ItemStack(Material.FIREWORK_ROCKET, 1));
 		}
 
@@ -158,14 +170,14 @@ public abstract class Race {
 		if (rs.getCountdown() != 0) { endCountdown(p); }
 		if (rs.getStopwatch() != 0) { stopStopwatch(p); }
 		this.raceStates.get(p).setCanceled(true);
-		this.endPlayerRace(p);
+		this.endPlayerRace(p, false);
 	}
 
 	public abstract void completeRace(Player p);
 
 	protected abstract String getSplitString(Player p, long elapsed);
 
-	protected abstract void endPlayerRace(Player p);
+	protected abstract void endPlayerRace(Player p, boolean finished);
 
 	protected void runCountdown(Player p, int startCount) {
 		int countdown = Bukkit.getScheduler().scheduleSyncRepeatingTask(this.plugin, new Runnable() {
@@ -193,7 +205,7 @@ public abstract class Race {
 		if (track.getType() == TrackType.ELYTRA) {
 			p.setGliding(true);
 		}
-		if (track.isIncludeReset()) {
+		if (track.isIncludeReset() && !track.isSurvival()) {
 			p.getInventory().setItem(7, RaceUtilities.getCPResetItem());
 		}
 		startStopwatch(p);
@@ -210,6 +222,7 @@ public abstract class Race {
 	private void startStopwatch(Player p) {
 		raceStates.get(p).setElapsed(0);
 		raceStates.get(p).setStartTime(System.currentTimeMillis());
+		List<Material> blockMaterials = List.of(Material.WATER, Material.VINE, Material.CAVE_VINES, Material.CAVE_VINES_PLANT, Material.WEEPING_VINES, Material.WEEPING_VINES_PLANT, Material.TWISTING_VINES, Material.TWISTING_VINES_PLANT);
 		int stopwatch = Bukkit.getScheduler().scheduleSyncRepeatingTask(this.plugin, () -> {
 			if (raceStates.get(p) == null) { stopStopwatch(p); }
 			long elapsed;
@@ -220,6 +233,9 @@ public abstract class Race {
 				elapsed = System.currentTimeMillis() - raceStates.get(p).getStartTime();
 			}
 			advanceCheckpoint(p);
+			if (track.isGroundFails() && (p.isOnGround() || blockMaterials.contains(p.getLocation().getBlock().getType()))) {
+				cancelRace(p, "You touched the ground.");
+			}
 			if ((int) elapsed / 60000 >= (minuteCap * laps)) { cancelRace(p, "You took too long to finish.");}
 			raceStates.get(p).setPreviousTickLocation(p.getLocation());
 			raceStates.get(p).setPreviousTick(System.currentTimeMillis());

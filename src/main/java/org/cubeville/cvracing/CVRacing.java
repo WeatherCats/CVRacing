@@ -47,6 +47,7 @@ public class CVRacing extends JavaPlugin implements Listener {
         commandParser.addCommand(new CreateTrack(this));
         commandParser.addCommand(new SetTrialsSpawn(this));
         commandParser.addCommand(new SetTrackExit(this));
+        commandParser.addCommand(new SetTrackFinishExit(this));
         commandParser.addCommand(new SetTrackSpectate(this));
         commandParser.addCommand(new SetTrackType(this));
         commandParser.addCommand(new AddRaceSign(this));
@@ -65,6 +66,8 @@ public class CVRacing extends JavaPlugin implements Listener {
         commandParser.addCommand(new SetCheckpointRegionReset(this));
         commandParser.addCommand(new SetSignLaps(this));
         commandParser.addCommand(new SetTrackTpToCp(this));
+        commandParser.addCommand(new SetTrackSurvival(this));
+        commandParser.addCommand(new SetTrackGroundFails(this));
         commandParser.addCommand(new AddCheckpointCommand(this));
         commandParser.addCommand(new DeleteCheckpointCommand(this));
         commandParser.addCommand(new DeleteVersusSpawn(this));

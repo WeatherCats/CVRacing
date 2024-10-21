@@ -1,6 +1,7 @@
 package org.cubeville.cvracing.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public class ForceJoinCommand extends Command {
+public class ForceJoinCommand extends BaseCommand {
     
     private JavaPlugin plugin;
     
@@ -33,7 +34,7 @@ public class ForceJoinCommand extends Command {
     }
     
     @Override
-    public CommandResponse execute(Player player, Set<String> set, Map<String, Object> map, List<Object> baseParameters) throws CommandExecutionException {
+    public CommandResponse execute(CommandSender commandSender, Set<String> set, Map<String, Object> map, List<Object> baseParameters) throws CommandExecutionException {
         FileConfiguration config = plugin.getConfig();
         String name = baseParameters.get(0).toString().toLowerCase();
         UUID uuid = (UUID) baseParameters.get(1);
@@ -48,7 +49,9 @@ public class ForceJoinCommand extends Command {
             throw new CommandExecutionException("Player with UUID " + uuid + " does not exist or is not online.");
         }
         
-        TrackManager.getTrack(name).onRightClick(player, type, laps);
+        Player affectedPlayer = Bukkit.getPlayer(uuid);
+        
+        TrackManager.getTrack(name).onRightClick(affectedPlayer, type, laps);
         
         return new CommandResponse("Player joined race!");
     }

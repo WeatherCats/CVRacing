@@ -99,6 +99,7 @@ public class CVRacing extends JavaPlugin implements Listener {
         commandParser.addCommand(new GiveCustomBoat());
         commandParser.addCommand(new ClearRaceInventory());
         commandParser.addCommand(new CenterPosition());
+        commandParser.addCommand(new ForceJoinCommand(this));
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new EventHandlers(this), this);

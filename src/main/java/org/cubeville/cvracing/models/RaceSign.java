@@ -1,5 +1,6 @@
 package org.cubeville.cvracing.models;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Sign;
 import org.bukkit.block.sign.Side;
@@ -19,6 +20,7 @@ public class RaceSign {
 		this.track = track;
 		Sign editSign = (Sign) this.sign.getLocation().getBlock().getState();
 		editSign.getSide(Side.FRONT).setLine(1, track.getName());
+		editSign.update(true);
 		this.setType(type);
 		this.displayQueue();
 		this.displayStatus(track.getStatus());
@@ -51,6 +53,7 @@ public class RaceSign {
 		typeText += type;
 		typeText += "]";
 		editSign.getSide(Side.FRONT).setLine(0, typeText);
+		editSign.update(true);
 	}
 
 	public void displayQueue() {

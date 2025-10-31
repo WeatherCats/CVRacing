@@ -50,7 +50,7 @@ public abstract class Race {
 				ItemStack carrotOnStick = new ItemStack(Material.CARROT_ON_A_STICK, 1);
 				ItemMeta stickMeta = carrotOnStick.getItemMeta();
 				stickMeta.setDisplayName("§6§lSpeedy Carrot Stick");
-				stickMeta.addEnchant(Enchantment.DURABILITY, 10, true);
+				stickMeta.addEnchant(Enchantment.UNBREAKING, 10, true);
 				carrotOnStick.setItemMeta(stickMeta);
 				if (!track.isSurvival()) {
 					player.getInventory().setItem(0, carrotOnStick);
@@ -73,7 +73,7 @@ public abstract class Race {
 					ItemStack trident = new ItemStack(Material.TRIDENT, 1);
 					ItemMeta tridentMeta = trident.getItemMeta();
 					tridentMeta.addEnchant(Enchantment.RIPTIDE, 3, false);
-					tridentMeta.addEnchant(Enchantment.DURABILITY, 10, true);
+					tridentMeta.addEnchant(Enchantment.UNBREAKING, 10, true);
 					tridentMeta.setDisplayName("§b§lSpeed Trident");
 					trident.setItemMeta(tridentMeta);
 					player.getInventory().setItem(0, trident);
@@ -86,7 +86,7 @@ public abstract class Race {
 					ItemStack fungusOnStick = new ItemStack(Material.WARPED_FUNGUS_ON_A_STICK, 1);
 					ItemMeta fungusMeta = fungusOnStick.getItemMeta();
 					fungusMeta.setDisplayName("§b§lSpeedy Fungus Stick");
-					fungusMeta.addEnchant(Enchantment.DURABILITY, 10, true);
+					fungusMeta.addEnchant(Enchantment.UNBREAKING, 10, true);
 					fungusOnStick.setItemMeta(fungusMeta);
 					player.getInventory().setItem(0, fungusOnStick);
 				}

@@ -14,7 +14,16 @@ import java.util.*;
 
 public class RaceManager {
 
-	public static final List<EntityType> racingVehicles = Arrays.asList(EntityType.BOAT, EntityType.PIG, EntityType.HORSE, EntityType.STRIDER);
+	public static final List<EntityType> racingVehicles = Arrays.asList(
+		EntityType.OAK_BOAT,
+		EntityType.BIRCH_BOAT,
+		EntityType.ACACIA_BOAT,
+		EntityType.JUNGLE_BOAT,
+		EntityType.SPRUCE_BOAT,
+		EntityType.DARK_OAK_BOAT,
+		EntityType.PIG,
+		EntityType.HORSE,
+		EntityType.STRIDER);
 
 	private static String timing = "SYSTEM";
 	private static HashMap<Player, RacePlayerState> races = new HashMap<>();

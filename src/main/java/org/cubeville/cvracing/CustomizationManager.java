@@ -44,8 +44,7 @@ public class CustomizationManager {
 
     public static Boat spawnBoat(Player player, Location location) {
         CustomizationState cs = getCustomizationState(player);
-        Boat boat = (Boat) Objects.requireNonNull(location.getWorld()).spawnEntity(location, EntityType.BOAT);
-        boat.setWoodType(cs.getTreeSpecies());
+        Boat boat = (Boat) Objects.requireNonNull(location.getWorld()).spawnEntity(location, cs.getBoatType());
         return boat;
     }
 
@@ -59,7 +58,7 @@ public class CustomizationManager {
         h.setTamed(true);
         h.setOwner(player);
         h.setJumpStrength(.8);
-        h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(.5);
+        h.getAttribute(Attribute.MOVEMENT_SPEED).setBaseValue(.5);
         h.setColor(cs.horseColor);
         h.setStyle(cs.horseStyle);
         return h;

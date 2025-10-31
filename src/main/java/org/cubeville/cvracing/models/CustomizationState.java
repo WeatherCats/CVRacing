@@ -3,6 +3,8 @@ package org.cubeville.cvracing.models;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -65,22 +67,22 @@ public class CustomizationState {
         );
     }
 
-    public TreeSpecies getTreeSpecies() {
+    public EntityType getBoatType() {
         switch(boatMaterial) {
             case OAK:
-                return TreeSpecies.GENERIC;
+                return EntityType.OAK_BOAT;
             case BIRCH:
-                return TreeSpecies.BIRCH;
+                return EntityType.BIRCH_BOAT;
             case ACACIA:
-                return TreeSpecies.ACACIA;
+                return EntityType.ACACIA_BOAT;
             case JUNGLE:
-                return TreeSpecies.JUNGLE;
+                return EntityType.JUNGLE_BOAT;
             case SPRUCE:
-                return TreeSpecies.REDWOOD;
+                return EntityType.SPRUCE_BOAT;
             case DARK_OAK:
-                return TreeSpecies.DARK_OAK;
+                return EntityType.DARK_OAK_BOAT;
         }
-        return TreeSpecies.GENERIC;
+        return EntityType.OAK_BOAT;
     }
 
     public boolean setArmorFromString(String string) {
